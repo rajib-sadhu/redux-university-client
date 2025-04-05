@@ -6,6 +6,7 @@ import { setUser, TUser } from "../redux/features/auth/authSlice";
 import { verifyToken } from "../utils/verifyToken";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import PHform from "../components/form/PHform";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -31,6 +32,7 @@ const Login = () => {
       const user = verifyToken(res.data.accessToken) as TUser;
 
       dispatch(setUser({ user: user, token: res.data.accessToken }));
+      console.log("Login", res.data.accessToken);
       navigate(`/${user.role}/dashboard`);
 
       toast.success("User Logging successfully!", {
@@ -54,7 +56,7 @@ const Login = () => {
         style={{ padding: "50px", display: "flex", justifyContent: "center" }}
       >
         <Card style={{ width: 400 }}>
-          <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
+          <PHform layout="vertical" onFinish={onSubmit}>
             <Form.Item label="ID">
               <Controller
                 name="id"
@@ -92,7 +94,7 @@ const Login = () => {
                 Login
               </Button>
             </Form.Item>
-          </Form>
+          </PHform>
         </Card>
       </Content>
     </Layout>
