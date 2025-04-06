@@ -1,12 +1,18 @@
 import { Button, Card, Form, Input, Layout, Typography } from "antd";
 import { useLoginMutation } from "../redux/features/auth/authApi";
-import { Controller, FieldValues, useForm } from "react-hook-form";
+import {
+  Controller,
+  FieldValues,
+  useForm,
+  useFormContext,
+} from "react-hook-form";
 import { useAppDispatch } from "../redux/hooks";
 import { setUser, TUser } from "../redux/features/auth/authSlice";
 import { verifyToken } from "../utils/verifyToken";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import PHform from "../components/form/PHform";
+import PHInput from "../components/form/PHInput";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -14,12 +20,14 @@ const { Title } = Typography;
 const Login = () => {
   const navigate = useNavigate();
 
-  const { control, handleSubmit } = useForm<FieldValues>();
+  // const { control, handleSubmit } = useForm<FieldValues>();
+
   const [login, { isLoading }] = useLoginMutation();
 
   const dispatch = useAppDispatch();
 
   const onSubmit = async (data: FieldValues) => {
+
     const toastId = toast.loading("logging In");
 
     try {
@@ -56,33 +64,9 @@ const Login = () => {
         style={{ padding: "50px", display: "flex", justifyContent: "center" }}
       >
         <Card style={{ width: 400 }}>
-          <PHform layout="vertical" onFinish={onSubmit}>
-            <Form.Item label="ID">
-              <Controller
-                name="id"
-                control={control}
-                rules={{ required: "ID is required" }}
-                render={({ field }) => (
-                  <Input {...field} size="large" placeholder="Enter your ID" />
-                )}
-              />
-            </Form.Item>
-
-            <Form.Item label="Password">
-              <Controller
-                name="password"
-                control={control}
-                rules={{ required: "Password is required" }}
-                render={({ field }) => (
-                  <Input.Password
-                    {...field}
-                    size="large"
-                    placeholder="Enter your password"
-                  />
-                )}
-              />
-            </Form.Item>
-
+          <PHform onSubmit={onSubmit}>
+            <PHInput name={"id"} type={"text"} label="ID" />
+            <PHInput name={"password"} type={"password"} label="Password" />
             <Form.Item>
               <Button
                 type="primary"
