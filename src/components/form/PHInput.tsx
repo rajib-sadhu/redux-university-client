@@ -23,11 +23,11 @@ const PHInput = ({
   const message = validationMessage || `${inputLabel} is required`;
 
   return (
-    <Form.Item label={inputLabel}>
-      <Controller
-        name={name}
-        rules={{ required: required ? message : true }}
-        render={({ field }) => (
+    <Controller
+      name={name}
+      rules={{ required: required ? message : true }}
+      render={({ field }) => (
+        <Form.Item label={inputLabel}>
           <Input
             {...field}
             type={type}
@@ -35,9 +35,9 @@ const PHInput = ({
             size="large"
             placeholder={inputPlaceholder}
           />
-        )}
-      />
-    </Form.Item>
+        </Form.Item>
+      )}
+    />
   );
 };
 
