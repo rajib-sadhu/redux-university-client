@@ -59,7 +59,7 @@ const CreateAcademicSemester = () => {
             options={monthOptions}
           />
           <PHSelect label="End Month" name="endMonth" options={monthOptions} />
-          <Button htmlType="submit">Submit</Button>
+          <Button type="primary" htmlType="submit">Submit</Button>
         </PHform>
       </Col>
     </Flex>
