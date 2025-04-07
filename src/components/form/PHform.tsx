@@ -35,6 +35,11 @@ const PHform = ({
 
   const methods = useForm(formConfig);
 
+  const submit: SubmitHandler<FieldValues> = (data) => {
+    onSubmit(data);
+    methods.reset();
+  };
+
   return (
     <FormProvider {...methods}>
       <Form
@@ -45,7 +50,7 @@ const PHform = ({
           padding: "20px",
           minWidth: "300px",
         }}
-        onFinish={methods.handleSubmit(onSubmit)}
+        onFinish={methods.handleSubmit(submit)}
       >
         {children}
       </Form>

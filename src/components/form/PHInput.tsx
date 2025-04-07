@@ -15,7 +15,7 @@ const PHInput = ({
   type = "text",
   label,
   placeholder,
-  required = true,
+  required = false,
   validationMessage,
 }: PHInputProps) => {
   const inputLabel = label || null;
@@ -25,7 +25,7 @@ const PHInput = ({
   return (
     <Controller
       name={name}
-      rules={{ required: required ? message : true }}
+      rules={{ required: required ? message : false }}
       render={({ field }) => (
         <Form.Item label={inputLabel}>
           <Input
