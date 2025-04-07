@@ -1,27 +1,32 @@
-import { Button, Space, Table } from "antd";
+import { Button, Pagination, Space, Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { useState } from "react";
 import { TQueryParam } from "../../../types/globals";
 import { useGetAllStudentsQuery } from "../../../redux/features/admin/userManagement";
 import { TStudent } from "../../../types";
 
-export type TTableData = Pick<TStudent, "name" | "id">;
+export type TTableData = Pick<TStudent, "fullName" | "id">;
 const StudentData = () => {
   const [params, setParams] = useState<TQueryParam[]>([]);
   const [page, setPage] = useState(1);
+
   const {
     data: studentData,
     isLoading,
     isFetching,
-  } = useGetAllStudentsQuery([
-    { name: "page", value: page },
-    // { name: "sort", value: "id" },
-    ...params,
+  } = useGetAllStudentsQuery(
+    [
+      { name: "limit", value: "2" },
+      { name: "page", value: page },
+      { name: "sort", value: "id" },
+      ...params,
+    ],
     {
       refetchOnFocus: true,
       refetchOnMountOrArgChange: true,
-    },
-  ]);
+    }
+  );
+  const metaData = studentData?.meta;
 
   const tableData = studentData?.data?.map(({ _id, fullName, id }) => ({
     key: _id,
@@ -77,17 +82,26 @@ const StudentData = () => {
       setParams(queryParams);
     }
 
-    console.log("params", pagination, filters, sorter, extra);
+    // console.log("params", pagination, filters, sorter, extra);
   };
 
   return (
-    <Table
-      loading={isFetching}
-      columns={columns}
-      dataSource={tableData}
-      onChange={onChange}
-      //   showSorterTooltip={{ target: "sorter-icon" }}
-    />
+    <>
+      <Table
+        loading={isFetching}
+        columns={columns}
+        dataSource={tableData}
+        onChange={onChange}
+        pagination={false}
+        //   showSorterTooltip={{ target: "sorter-icon" }}
+      />
+      <Pagination
+        current={page}
+        onChange={(value) => setPage(value)}
+        total={metaData?.total}
+        pageSize={metaData?.limit}
+      />
+    </>
   );
 };
 
