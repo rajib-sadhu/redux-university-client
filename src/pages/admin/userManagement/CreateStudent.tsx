@@ -62,6 +62,7 @@ const studentDefaultValues = {
   },
   gender: "male",
 
+  email: "student3@gmail.com",
   bloogGroup: "A+",
 
   contactNo: "1235678",
@@ -87,9 +88,7 @@ const studentDefaultValues = {
 };
 
 const CreateStudent = () => {
-  const [addStudent, { data, error }] = useAddStudentMutation();
-
-  console.log({ data, error });
+  const [addStudent, { isLoading: uploading }] = useAddStudentMutation();
 
   const { data: sData, isLoading: sIsLoading } =
     useGetAllSemestersQuery(undefined);
@@ -121,7 +120,7 @@ const CreateStudent = () => {
     const formData = new FormData();
 
     formData.append("data", JSON.stringify(studentData));
-    console.log(Object.fromEntries(formData));
+    formData.append("file", data.image);
 
     try {
       const res = (await addStudent(formData)) as TResponse;
@@ -129,7 +128,7 @@ const CreateStudent = () => {
       if (res.error) {
         toast.error(res.error.data.message, { id: toastId });
       } else {
-        toast.success("Semester created", { id: toastId });
+        toast.success("Student created", { id: toastId });
       }
     } catch (err) {
       toast.error("Something went wrong", { id: toastId });
@@ -155,7 +154,11 @@ const CreateStudent = () => {
               <PHSelect options={genderOptions} name="gender" label="Gender" />
             </Col>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
-              <PHDatePicker name="dateOfBirth" label="Date of birth" />
+              <PHDatePicker
+                name="dateOfBirth"
+                label="Date of birth"
+                disabledFuture
+              />
             </Col>
 
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
@@ -303,7 +306,7 @@ const CreateStudent = () => {
             </Col>
           </Row>
 
-          <Button type="primary" htmlType="submit">
+          <Button disabled={uploading} type="primary" htmlType="submit">
             Submit
           </Button>
         </PHform>
