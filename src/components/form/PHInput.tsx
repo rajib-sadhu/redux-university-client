@@ -1,43 +1,31 @@
-import { Form, Input } from "antd";
-import { Controller } from "react-hook-form";
+import { Form, Input } from 'antd';
+import { Controller } from 'react-hook-form';
 
-interface PHInputProps {
+type TInputProps = {
+  type: string;
   name: string;
-  type?: string;
-  label?: string | null;
-  placeholder?: string;
-  required?: boolean;
-  validationMessage?: string;
-}
+  label?: string;
+  disabled?: boolean;
+};
 
-const PHInput = ({
-  name,
-  type = "text",
-  label,
-  placeholder,
-  required = false,
-  validationMessage,
-}: PHInputProps) => {
-  const inputLabel = label || null;
-  const inputPlaceholder = placeholder || `Enter your ${name}`;
-  const message = validationMessage || `${inputLabel} is required`;
-
+const PHInput = ({ type, name, label, disabled }: TInputProps) => {
   return (
-    <Controller
-      name={name}
-      rules={{ required: required ? message : false }}
-      render={({ field }) => (
-        <Form.Item label={inputLabel}>
-          <Input
-            {...field}
-            type={type}
-            id={name}
-            size="large"
-            placeholder={inputPlaceholder}
-          />
-        </Form.Item>
-      )}
-    />
+    <div style={{ marginBottom: '20px' }}>
+      <Controller
+        name={name}
+        render={({ field }) => (
+          <Form.Item label={label}>
+            <Input
+              {...field}
+              type={type}
+              id={name}
+              size="large"
+              disabled={disabled}
+            />
+          </Form.Item>
+        )}
+      />
+    </div>
   );
 };
 

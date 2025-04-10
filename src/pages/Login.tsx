@@ -23,6 +23,10 @@ const Login = () => {
   // const { control, handleSubmit } = useForm<FieldValues>();
 
   const [login, { isLoading }] = useLoginMutation();
+  const defaultValues = {
+    userId: '2025030004',
+    password: 'student123',
+  };
 
   const dispatch = useAppDispatch();
 
@@ -64,7 +68,7 @@ const Login = () => {
         style={{ padding: "50px", display: "flex", justifyContent: "center" }}
       >
         <Card style={{ width: 400 }}>
-          <PHform onSubmit={onSubmit}>
+          <PHform defaultValues={defaultValues} onSubmit={onSubmit}>
             <PHInput name={"id"} type={"text"} label="ID" />
             <PHInput name={"password"} type={"password"} label="Password" />
             <Form.Item>
